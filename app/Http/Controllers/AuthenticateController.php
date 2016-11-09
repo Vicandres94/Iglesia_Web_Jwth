@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BLL\RolesBLL;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
@@ -28,5 +29,15 @@ class AuthenticateController extends Controller
     {
         $UserBll = new UserBLL();
         return response()->json($UserBll->Authenticate($request->all()));
+    }
+    
+    public  function  GetRoles(){
+        $rolesBLL = new RolesBLL();
+        return response()->json($rolesBLL->GetRoles());
+    }
+
+    public function CreateRol(Request $request){
+        $rolesBLL = new RolesBLL();
+        return response()->json($rolesBLL->CreateRol($request->all()));
     }
 }

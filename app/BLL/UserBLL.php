@@ -17,10 +17,11 @@ use App\Entidades\Respuesta;
 
 class UserBLL
 {
+    
     //Ahora lo pruebo en el controller
     public function Authenticate($datos){
         $respuesta = new RespuestaToken();
-        if(!empty($datos["username"]) && !empty($datos["password"])){ //valido que los campos no vengan vacios
+        if(!empty($datos["username"]) && !empty($datos["password"])){
             //ahora en esta parte necesito hacer que me retorne el token y el usuario completo, entonces se hace esto asi lo hago yo
             //primero consulto al usuario
             $usuario = User::where('username', $datos["username"])->first();
@@ -30,6 +31,7 @@ class UserBLL
                     $respuesta->datos = $usuario;
                     $respuesta->mensaje = "token Exitoso";
                     $respuesta->token = JWTAuth::fromUser($usuario); //Genero el token para ese usuario
+
                 }
                 else{ //Si las contraseñas no coinciden entonces error
                     $respuesta->error = true;
