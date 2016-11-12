@@ -9,11 +9,14 @@
 namespace App\BLL;
 
 //aqui utilizaré el token y utilizaré el modelo user
+use App\Iglesia;
 use JWTAuth;
 use App\User;
 use App\Entidades\RespuestaToken;
 use Illuminate\Support\Facades\Hash;
 use App\Entidades\Respuesta;
+use App\BLL\IglesiaBLL;
+use App\BLL\RolBLL;
 
 class UserBLL
 {
@@ -63,4 +66,54 @@ class UserBLL
         }
         return $respuesta;
     }
+
+    public function CrearUsuario($datos){
+        $respuesta = new RespuestaToken();
+
+        if(!empty($datos["nombres"]) && !empty($datos["apellidos"]) && !empty($datos["username"]) && !empty($datos["password"]) && !empty($datos["identificacion"]) && !empty($datos["telefono"]) && !empty($datos["direccion"]) && !empty($datos["rolesId"]) && !empty($datos["iglesiasId"])){
+            $rolBll = new RolBLL();
+            $rol = $rolBll->GetRol($datos["rolesId"]);
+            if($rol->error == false){
+                $iglesiaBll = new IglesiaBLL();
+                $iglesia = $iglesiaBll->GetIglesia($datos["iglesiasId"]);
+                if($iglesia->error == false){
+                    $user = new User();
+                    $user->nombres = $datos["nombres"];
+                    $user->apellidos = $datos["apellidos"];
+                    $user->username = $datos["username"];
+                    $user->password = Hash::make($datos["password"]);
+                    $user->identificacion = $datos["identificacion"];
+                    $user->telefono = $datos["telefono"];
+                    $user->direccion = $datos["direccion"];
+                    $user->rolesId = $datos["rolesId"];
+                    $user->iglesiasId = $datos["iglesiasId"];
+                    if($user->save()){
+                        $respuesta->error = false;
+                        $respuesta->mensaje = "Datos almacenados exitosamente";
+                        $respuesta->datos = $user;
+                        $respuesta->token = JWTAuth::fromUser($user);
+                    }
+                    else{
+                        $respuesta->error = true;
+                        $respuesta->mensaje = "No se pudieron almacenar los datos, intente nuevamente";
+                    }
+                }
+                else{
+                    $respuesta->error = $iglesia->error;
+                    $respuesta->mensaje = $iglesia->mensaje;
+                }
+            }
+            else{
+                $respuesta->error = $rol->error;
+                $respuesta->mensaje = $rol->mensaje;
+            }
+        }
+        else{
+            $respuesta->error = true;
+            $respuesta->mensaje = "Verifique que los campos no esten vacios";
+        }
+        return $respuesta;
+    }
+    
+    
 }

@@ -19,7 +19,8 @@ Route::group(['prefix' => 'api'], function()
 {
     Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
     Route::post('authenticate', 'AuthenticateController@authenticate');
-    Route::get('GetUsuarios', 'AuthenticateController@index');
-    Route::get('GetRoles', 'AuthenticateController@GetRoles');
-    Route::post('CreateRol', 'AuthenticateController@CreateRol');
+    Route::get('GetUsuarios', 'UserController@index');
+    Route::get('GetRoles', 'RolesController@GetRoles');
+    Route::post('CreateRol', 'RolController@CreateRol');
+    Route::post('CrearUsuario', 'UserController@CrearUsuario');
 });

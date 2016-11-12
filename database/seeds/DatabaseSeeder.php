@@ -13,16 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+      /*  // $this->call(UsersTableSeeder::class);
         Model::unguard();
 
         DB::table('users')->delete();
 
         $users = array(
-            [ 'username' => 'admin', 'password' => Hash::make('secret')],
-            [ 'username' => 'user1', 'password' => Hash::make('secret')],
-            [ 'username' => 'user2', 'password' => Hash::make('secret')],
-            [ 'username' => 'user3', 'password' => Hash::make('secret')],
+            [ 'username' => 'admin', 'password' => Hash::make('secret')=>],
+            [ 'username' => 'user', 'password' => Hash::make('secret')]
+
         );
 
         // Loop through each user above and create the record for them in the database
@@ -31,7 +30,7 @@ class DatabaseSeeder extends Seeder
             User::create($user);
         }
 
-        Model::reguard();
+        Model::reguard();*/
     }
 
 }
