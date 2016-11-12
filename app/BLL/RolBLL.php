@@ -105,7 +105,7 @@ class RolBLL
             $rol = Rol::find($datos["rolesId"]);
             if ($rol){
                 if (!empty($datos["nombreRol"])){
-                    $rol->nombreRol = $datos['nombreRol'];
+                    $rol->nombreRol = $datos['nombreRol']; 
                     if ($rol->save()) {
                         $respuesta->datos = $rol;
                         $respuesta->error = false;
