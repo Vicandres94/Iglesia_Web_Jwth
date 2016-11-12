@@ -20,7 +20,10 @@ Route::group(['prefix' => 'api'], function()
     Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
     Route::post('authenticate', 'AuthenticateController@authenticate');
     Route::get('GetUsuarios', 'UserController@index');
-    Route::get('GetRoles', 'RolesController@GetRoles');
+    Route::get('GetRoles', 'RolController@GetRoles');
     Route::post('CreateRol', 'RolController@CreateRol');
     Route::post('CrearUsuario', 'UserController@CrearUsuario');
+    Route::put('EliminarRol', 'RolController@EliminarRol');
+    Route::post('ModificarRol', 'RolController@ModificarRol');
+
 });
