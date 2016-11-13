@@ -17,13 +17,20 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'api'], function()
 {
+    //------------------------------ Login -----------------------------------------------------
     Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
     Route::post('authenticate', 'AuthenticateController@authenticate');
+    //------------------------------ Usuarios --------------------------------------------------
     Route::get('GetUsuarios', 'UserController@index');
+    Route::post('CrearUsuario', 'UserController@CrearUsuario');
+    Route::put('EliminarUsuario', 'UserController@EliminarUsuario');
+    Route::post('ModificarUsuario', 'UserController@ModificarUsuario');
+    //------------------------------ Roles -----------------------------------------------------
     Route::get('GetRoles', 'RolController@GetRoles');
     Route::post('CreateRol', 'RolController@CreateRol');
-    Route::post('CrearUsuario', 'UserController@CrearUsuario');
     Route::put('EliminarRol', 'RolController@EliminarRol');
     Route::post('ModificarRol', 'RolController@ModificarRol');
+    //------------------------------ Productos -------------------------------------------------
+    Route::post('CrearProducto', 'ProductoController@CrearProducto');
 
 });

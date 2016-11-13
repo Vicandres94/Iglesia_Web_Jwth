@@ -58,7 +58,7 @@ class RolBLL
 
     public function GetRoles(){
         $respuesta = new Respuesta();
-        $roles = Roles::all();
+        $roles = Rol::all();
         if(count($roles) != 0){
             $respuesta->error = false;
             $respuesta->datos = $roles;
