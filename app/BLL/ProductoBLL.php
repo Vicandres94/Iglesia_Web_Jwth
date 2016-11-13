@@ -53,16 +53,16 @@ class ProductoBLL
         return $respuesta;
     }
 
-    public function GetRoles(){
+    public function GetProductos(){
         $respuesta = new Respuesta();
-        $roles = Rol::all();
-        if(count($roles) != 0){
+        $productos = Producto::all();
+        if(count($productos) != 0){
             $respuesta->error = false;
-            $respuesta->datos = $roles;
+            $respuesta->datos = $productos;
         }
         else{
             $respuesta->error = true;
-            $respuesta->mensaje = "No se encuentran roles registrados";
+            $respuesta->mensaje = "No se encuentran Productos registrados";
         }
         return $respuesta;
     }
