@@ -99,7 +99,7 @@ class RolBLL
     public  function ModificarRol($datos)
     {
         $respuesta = new Respuesta();
-        $rol = new Rol();
+        
 
         if (!empty($datos["rolesId"])){
             $rol = Rol::find($datos["rolesId"]);

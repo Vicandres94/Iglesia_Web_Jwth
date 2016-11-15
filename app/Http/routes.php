@@ -33,5 +33,6 @@ Route::group(['prefix' => 'api'], function()
     //------------------------------ Productos -------------------------------------------------
     Route::post('CrearProducto', 'ProductoController@CrearProducto');
     Route::get('GetProductos', 'ProductoController@GetProductos');
-
+    Route::put('EliminarProducto', 'ProductoController@EliminarProducto');
+    Route::post('ModificarProducto', 'ProductoController@ModificarProducto');
 });
