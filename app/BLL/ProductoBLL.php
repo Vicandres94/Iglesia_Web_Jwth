@@ -9,6 +9,7 @@
 namespace App\BLL;
 
 
+use App\Categoria;
 use App\Entidades\Respuesta;
 use App\Producto;
 
@@ -18,37 +19,47 @@ class ProductoBLL
     {
         $respuesta = new Respuesta();
         $producto = new Producto();
-        if (!empty($datos["producto"]) && !empty($datos["valor"])){
-            $Producto = Producto::all();
-            $cont=0;
-            foreach ($Producto as $item){
-                if ($datos["producto"] == $item->producto){
-                    $cont= $cont+1;
+        $categoria =  Categoria::find($datos["categoriasId"]);
+
+        if ($categoria){
+            if (!empty($datos["producto"]) && !empty($datos["valor"])){
+                $Producto = Producto::all();
+                $cont=0;
+                foreach ($Producto as $item){
+                    if ($datos["producto"] == $item->producto){
+                        $cont= $cont+1;
+                    }
                 }
-            }
-            if ($cont>=1){
-                $respuesta->error = true;
-                $respuesta->mensaje = "El Producto ya Existe!";
-            }
-            else{
-                $producto->producto = $datos['producto'];
-                $producto->valor = $datos['valor'];
-                if ($producto->save()) {
-                    $respuesta->datos = $producto;
-                    $respuesta->error = false;
-                    $respuesta->mensaje = "Producto almacenado Exitosamente";
+                if ($cont>=1){
+                    $respuesta->error = true;
+                    $respuesta->mensaje = "El Producto ya Existe!";
                 }
                 else{
-                    $respuesta->datos = null;
-                    $respuesta->error = true;
-                    $respuesta->mensaje = "Error al Registrar Producto";
+                    $producto->producto = $datos['producto'];
+                    $producto->valor = $datos['valor'];
+                    $producto->categoriasId = $datos["categoriasId"];
+                    if ($producto->save()) {
+                        $respuesta->datos = $producto;
+                        $respuesta->error = false;
+                        $respuesta->mensaje = "Producto almacenado Exitosamente";
+                    }
+                    else{
+                        $respuesta->datos = null;
+                        $respuesta->error = true;
+                        $respuesta->mensaje = "Error al Registrar Producto";
+                    }
                 }
+            }
+            else{
+                $respuesta->error = true;
+                $respuesta->mensaje = "Verifique que los campos no estén vacios";
             }
         }
         else{
             $respuesta->error = true;
-            $respuesta->mensaje = "Verifique que los campos no estén vacios";
+            $respuesta->mensaje = "La Categoria Asociada al Producto No Existe";
         }
+
         return $respuesta;
     }
 
@@ -113,6 +124,7 @@ class ProductoBLL
                     if (!empty($datos["producto"]) && !empty($datos["valor"])){
                         $producto->producto = $datos['producto'];
                         $producto->valor = $datos['valor'];
+                        $producto->categoriasId = $datos["categoriasId"];
                         if ($producto->save()) {
                             $respuesta->datos = $producto;
                             $respuesta->error = false;

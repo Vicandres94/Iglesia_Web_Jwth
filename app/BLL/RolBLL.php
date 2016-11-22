@@ -36,17 +36,30 @@ class RolBLL
     {
         $respuesta = new Respuesta();
         $rol = new Rol();
-        $rol->nombreRol = $datos['nombreRol'];
-        if (!empty($datos["nombreRol"])){
-            if ($rol->save()) {
-                $respuesta->datos = $rol;
-                $respuesta->error = false;
-                $respuesta->mensaje = "Rol almacenado Exitosamente";
+        if (!empty($datos["NombreRol"])){
+            $Rol = Rol::all();
+            $cont=0;
+            foreach ($Rol as $item){
+                if ($datos["nombreRol"] == $item->nombreRol){
+                    $cont= $cont+1;
+                }
+            }
+            if ($cont>=1){
+                $respuesta->error = true;
+                $respuesta->mensaje = "El Rol ya Existe!";
             }
             else{
-                $respuesta->datos = null;
-                $respuesta->error = true;
-                $respuesta->mensaje = "Error al Registrar Rol";
+                $rol->rol = $datos['nombreRol'];
+                if ($rol->save()) {
+                    $respuesta->datos = $rol;
+                    $respuesta->error = false;
+                    $respuesta->mensaje = "Rol almacenado Exitosamente";
+                }
+                else{
+                    $respuesta->datos = null;
+                    $respuesta->error = true;
+                    $respuesta->mensaje = "Error al Registrar Rol";
+                }
             }
         }
         else{
@@ -99,39 +112,53 @@ class RolBLL
     public  function ModificarRol($datos)
     {
         $respuesta = new Respuesta();
-        
-
         if (!empty($datos["rolesId"])){
-            $rol = Rol::find($datos["rolesId"]);
-            if ($rol){
-                if (!empty($datos["nombreRol"])){
-                    $rol->nombreRol = $datos['nombreRol']; 
-                    if ($rol->save()) {
-                        $respuesta->datos = $rol;
-                        $respuesta->error = false;
-                        $respuesta->mensaje = "Rol Modificado Exitosamente";
+            $Rol = Rol::all();
+            $cont=0;
+            foreach ($Rol as $item){
+                if (($datos["nombreRol"] == $item->nombreRol)){
+                    $cont= $cont+1;
+                }
+            }
+            if ($cont>=1){
+                $respuesta->error = true;
+                $respuesta->mensaje = "El Producto ya Existe!";
+            }
+            else{
+                $producto = Producto::find($datos["productosId"]);
+                if ($producto){
+                    if (!empty($datos["producto"]) && !empty($datos["valor"])){
+                        $producto->producto = $datos['producto'];
+                        $producto->valor = $datos['valor'];
+                        if ($producto->save()) {
+                            $respuesta->datos = $producto;
+                            $respuesta->error = false;
+                            $respuesta->mensaje = "Producto Modificado Exitosamente";
+                        }
+                        else{
+                            $respuesta->datos = null;
+                            $respuesta->error = true;
+                            $respuesta->mensaje = "Error al Registrar Producto";
+                        }
                     }
                     else{
                         $respuesta->datos = null;
                         $respuesta->error = true;
-                        $respuesta->mensaje = "Error al Modificar Rol";
+                        $respuesta->mensaje = "Verifique que los campos no estén vacios";
                     }
                 }
                 else{
+                    $respuesta->datos = null;
                     $respuesta->error = true;
                     $respuesta->mensaje = "Verifique que los campos no estén vacios";
                 }
-            }
-            else{
-                $respuesta->error = true;
-                $respuesta->mensaje = "El rol que desea Modificar no existe";
+
             }
         }
         else{
             $respuesta->error = true;
-            $respuesta->mensaje = "Verifique que los datos no estén vacios";
+            $respuesta->mensaje = "Verifique que los campos no estén vacios";
         }
-
         return $respuesta;
     }
 }
