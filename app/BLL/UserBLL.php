@@ -80,7 +80,7 @@ class UserBLL
                     $User = User::all();
                     $cont = 0;
                     foreach ($User as $item) {
-                        if (($datos["usename"] == $item->username) || ($datos["identificacion"] != $item->identificacion)) {
+                        if (($datos["username"] == $item->username) || ($datos["identificacion"] == $item->identificacion)) {
                             $cont = $cont + 1;
                         }
                     }
@@ -137,33 +137,44 @@ class UserBLL
             if($rol->error == false){
                 $iglesiaBll = new IglesiaBLL();
                 $iglesia = $iglesiaBll->GetIglesia($datos["iglesiasId"]);
-                if($iglesia->error == false){
-                    $user = User::find($datos["usersId"]);
-                    if ($user){
-                        $user->nombres = $datos["nombres"];
-                        $user->apellidos = $datos["apellidos"];
-                        $user->username = $datos["username"];
-                        $user->password = Hash::make($datos["password"]);
-                        $user->identificacion = $datos["identificacion"];
-                        $user->telefono = $datos["telefono"];
-                        $user->direccion = $datos["direccion"];
-                        $user->rolesId = $datos["rolesId"];
-                        $user->iglesiasId = $datos["iglesiasId"];
-                        if($user->save()){
-                            $respuesta->error = false;
-                            $respuesta->mensaje = "Datos almacenados exitosamente";
-                            $respuesta->datos = $user;
-                            $respuesta->token = JWTAuth::fromUser($user);
-                        }
-                        else{
-                            $respuesta->error = true;
-                            $respuesta->mensaje = "No se pudieron almacenar los datos, intente nuevamente";
+                if($iglesia->error == false) {
+                    $Usuarios = User::all();
+                    $cont = 0;
+                    foreach ($Usuarios as $item) {
+                        if (($datos["username"] == $item->username) || ($datos["identificacion"] == $item->identificacion)) {
+                            $cont = $cont + 1;
                         }
                     }
-                    else{
+                    if ($cont >= 1) {
+                        $respuesta->error = true;
+                        $respuesta->mensaje = "El Usuario ya Existe!";
+                    }
+                    else {
+                    $user = User::find($datos["usersId"]);
+                        if ($user) {
+                            $user->nombres = $datos["nombres"];
+                            $user->apellidos = $datos["apellidos"];
+                            $user->username = $datos["username"];
+                            $user->password = Hash::make($datos["password"]);
+                            $user->identificacion = $datos["identificacion"];
+                            $user->telefono = $datos["telefono"];
+                            $user->direccion = $datos["direccion"];
+                            $user->rolesId = $datos["rolesId"];
+                            $user->iglesiasId = $datos["iglesiasId"];
+                                if ($user->save()) {
+                                    $respuesta->error = false;
+                                    $respuesta->mensaje = "Datos almacenados exitosamente";
+                                    $respuesta->datos = $user;
+                                    $respuesta->token = JWTAuth::fromUser($user);
+                                } else {
+                                    $respuesta->error = true;
+                                    $respuesta->mensaje = "No se pudieron almacenar los datos, intente nuevamente";
+                                }
+                    } else {
                         $respuesta->error = true;
                         $respuesta->mensaje = "El Usuario no existe!";
                     }
+                  }
                 }
                 else{
                     $respuesta->error = $iglesia->error;
