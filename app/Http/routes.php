@@ -40,4 +40,9 @@ Route::group(['prefix' => 'api'], function()
     Route::get('GetCategorias', 'CategoriaController@GetCategorias');
     Route::put('EliminarCategoria', 'CategoriaController@EliminarCategoria');
     Route::post('ModificarCategoria', 'CategoriaController@ModificarCategoria');
+    //------------------------------ Actividades ------------------------------------------------
+    Route::post('CrearActividad', 'ActividadController@CrearActividad');
+    Route::get('GetActividades', 'ActividadController@GetActividades');
+    Route::put('EliminarActividad', 'ActividadController@EliminarActividad');
+    Route::post('ModificarActividad', 'ActividadController@ModificarActividad');
 });
