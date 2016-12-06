@@ -70,7 +70,10 @@ class ActividadBLL
 
     public function GetActividades(){
         $respuesta = new Respuesta();
-        $actividades = Actividad::where('estado', "Pendiente")->get();
+        $actividades = Actividad::join('categorias', 'actividades.categoriasId', '=', 'categorias.categoriasId')
+            ->where('estado', "Pendiente")
+            ->select('actividades.*', 'categorias.categoria')
+            ->get();
         if(count($actividades) != 0){
             $respuesta->error = false;
             $respuesta->datos = $actividades;

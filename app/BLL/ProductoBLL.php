@@ -65,7 +65,11 @@ class ProductoBLL
 
     public function GetProductos(){
         $respuesta = new Respuesta();
-        $productos = Producto::all();
+        //$productos = Producto::all();
+        $productos = Producto::join('categorias', 'productos.categoriasId', '=', 'categorias.categoriasId')
+            //->where('estado', "Pendiente")
+            ->select('productos.*', 'categorias.categoria')
+            ->get();
         if(count($productos) != 0){
             $respuesta->error = false;
             $respuesta->datos = $productos;
